@@ -2,15 +2,22 @@ import psycopg2
 import psycopg2.extras
 import streamlit as st
 
+import os
+import psycopg2
+
 def connect_db():
-    conn = psycopg2.connect(
-        dbname='Room_Mates_Student_Database',
-        user='postgres',
-        password='Knut0817!',
-        host='localhost',
-        port='5432'
-    )
+    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://RoomMates_owner:7CKkMTds5Yqy@ep-young-cell-a531avz2.us-east-2.aws.neon.tech/RoomMates?sslmode=require") 
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
+
+# Test the database connection in main()
+conn = connect_db()
+if conn:
+    st.write("Database connection successful.")
+    conn.close()
+else:
+    st.write("Failed to connect to the database.")
+
 
 # Define UserProfile class
 class UserProfile:
