@@ -140,9 +140,9 @@ def calculate_compatibility(user1, user2):
     busy_weight = 1.5
     significant_other_weight = 0.5
     major_weight = 0.5
-    year_weight = 2.0
+    year_weight = 1.5
     snore_weight = 0.5
-    values_in_roommate_weight = 0.5
+    values_in_roommate_weight = 1.0
     primary_focus_weight = 0.5
 
     # Personality compatibility (1 if the same, 0.5 if different)
@@ -321,7 +321,7 @@ def get_user_profile():
 
     drug_use = st.selectbox("What is your stance on drug use?", 
                             [1, 2], 
-                            format_func=lambda x: "1: Yes daily" if x == 1 else "2: No")
+                            format_func=lambda x: "1: Yes" if x == 1 else "2: No")
 
     activities = st.selectbox("What activities do you prefer?", 
                               [1, 2], 
