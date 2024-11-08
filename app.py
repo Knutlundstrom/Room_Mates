@@ -248,15 +248,17 @@ def get_user_profile():
     # Collect user inputs
     name = st.text_input("What is your name?")
     email_or_instagram = st.text_input("Please type email, Instagram, or preferred way to be reached out to when matched:")
-    
 
-     cleanliness = st.selectbox("How clean are you?", 
-                               options=[1, 2, 3], 
-                               format_func=lambda x: {
-                                   1: "1: I have an assigned day weekly for deep cleaning, dishes are never in the sink, and my cleaning routine is set",
-                                   2: "2: I take care of my room that's it and leave dishes when I am tired",
-                                   3: "3: I clean when I feel like it or seems to be time"
-                               }[x])
+    # Collect cleanliness preference
+    cleanliness = st.selectbox(
+        "How clean are you?", 
+        options=[1, 2, 3], 
+        format_func=lambda x: {
+            1: "1: I have an assigned day weekly for deep cleaning, dishes are never in the sink, and my cleaning routine is set",
+            2: "2: I take care of my room that's it and leave dishes when I am tired",
+            3: "3: I clean when I feel like it or seems to be time"
+        }[x]
+    )
 
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
 
