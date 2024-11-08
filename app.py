@@ -238,6 +238,17 @@ class UserProfile:
 def get_user_profile():
     st.title("Room_Mates/The Future of Roommate Matching")
 
+import streamlit as st
+
+# Main title
+st.title("Room_Mates/The Future of Roommate Matching")
+
+# Subtitle for Alpha test notice
+st.write("### This is an Alpha test")
+st.write("Feedback to kl608260@wne.edu very much appreciated.")
+st.write("If no matches are found due to a small number of users, try again in a few days.")
+
+
     # Collect user inputs
     name = st.text_input("What is your name?")
     email_or_instagram = st.text_input("Please type email, Instagram, or preferred way to be reached out to when matched:")
