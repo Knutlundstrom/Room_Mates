@@ -1,4 +1,4 @@
-# redeploy
+
 import psycopg2
 import psycopg2.extras
 import streamlit as st
@@ -129,76 +129,41 @@ def get_all_user_profiles():
         conn.close()
 
 def calculate_compatibility(user1, user2):
-    # Weight settings (total should sum to 10)
-    personality_weight = 1.5
-    confrontational_weight = 0.5
-    religion_weight = 0.5
-    sleep_schedule_weight = 1.5
-    age_weight = 0.5
-    drug_use_weight = 0.5
-    social_preference_weight = 1.5
-    activities_weight = 1.5
-    busy_weight = 1.5
-    significant_other_weight = 0.5
+    # Updated weights for higher priority factors (ensuring total weight sums to 10 for 0-10 scaling)
+    personality_weight = 0.5
+    confrontational_weight = 0.25
+    religion_weight = 0.25
+    sleep_schedule_weight = 0.5
+    age_weight = 0.25
+    drug_use_weight = 0.25
+    social_preference_weight = 1.5  # Higher weight
+    activities_weight = 1.5  # Higher weight
+    busy_weight = 0.5
+    significant_other_weight = 0.25
     major_weight = 0.5
-    year_weight = 1.5
-    snore_weight = 0.5
-    values_in_roommate_weight = 1.0
-    primary_focus_weight = 0.5
+    year_weight = 1.5  # Higher weight
+    snore_weight = 0.25
+    values_in_roommate_weight = 1.5  # Higher weight
+    primary_focus_weight = 1.5  # Higher weight
 
-    # Personality compatibility (1 if the same, 0.5 if different)
-    personality_score = 1 if user1.personality_type == user2.personality_type else 0.5
+    # Compatibility scores for each factor (1 if match, 0 if not)
+    personality_score = 1 if user1.personality_type == user2.personality_type else 0
+    confrontational_score = 1 if user1.confrontational_behavior == user2.confrontational_behavior else 0
+    religion_score = 1 if user1.religion == user2.religion else 0
+    sleep_schedule_score = 1 if user1.sleep_schedule == user2.sleep_schedule else 0
+    age_score = 1 if abs(user1.age - user2.age) <= 10 else 0  # Similar age within a 10-year range
+    drug_use_score = 1 if user1.drug_use == user2.drug_use else 0
+    social_preference_score = 1 if user1.social_battery == user2.social_battery else 0
+    activities_score = 1 if user1.activities == user2.activities else 0
+    busy_score = 1 if user1.busy == user2.busy else 0
+    significant_other_score = 1 if user1.significant_other == user2.significant_other else 0
+    major_score = 1 if user1.major == user2.major else 0
+    year_score = 1 if user1.year == user2.year else 0
+    snore_score = 1 if user1.snore == user2.snore else 0
+    values_in_roommate_score = 1 if user1.values_in_roommate == user2.values_in_roommate else 0
+    primary_focus_score = 1 if user1.primary_focus == user2.primary_focus else 0
 
-    # Confrontational behavior compatibility (1 if the same, 0.5 if different)
-    confrontational_score = 1 if user1.confrontational_behavior == user2.confrontational_behavior else 0.5
-
-    # Religion compatibility (1 if the same, 0.5 if different)
-    religion_score = 1 if user1.religion == user2.religion else 0.5
-
-    # Sleep schedule compatibility (1 if the same, 0.5 if different)
-    sleep_schedule_score = 1 if user1.sleep_schedule == user2.sleep_schedule else 0.5
-
-    # Age compatibility (1 - difference in age / 100, limited to a minimum of 0)
-    age_score = max(0, 1 - (abs(user1.age - user2.age) / 100))
-
-    # Drug use compatibility (1 if the same, 0.5 if different)
-    drug_use_score = 1 if user1.drug_use == user2.drug_use else 0.5
-
-    # Social preference compatibility (1 if the same, 0.5 if different)
-    social_preference_score = 1 if user1.social_battery == user2.social_battery else 0.5
-
-    # Activities compatibility (1 if the same, 0.5 if different)
-    activities_score = 1 if user1.activities == user2.activities else 0.5
-
-    # Busy lifestyle compatibility (1 if the same, 0.5 if different)
-    busy_score = 1 if user1.busy == user2.busy else 0.5
-
-    # Significant Other compatibility (1 if the same, 0.5 if different)
-    significant_other_score = 1 if user1.significant_other == user2.significant_other else 0.5
-
-    # Major compatibility (1 if the same, 0.5 if different)
-    major_score = 1 if user1.major == user2.major else 0.5
-
-    # Year compatibility (1 if the same, 0.5 if different)
-    year_score = 1 if user1.year == user2.year else 0.5
-
-    # Snoring compatibility (1 if the same, 0.5 if different)
-    snore_score = 1 if user1.snore == user2.snore else 0.5
-
-    # Values in a roommate compatibility (1 if the same, 0.5 if different)
-    values_in_roommate_score = 1 if user1.values_in_roommate == user2.values_in_roommate else 0.5
-
-    # Primary focus compatibility (1 if the same, 0.5 if different)
-    primary_focus_score = 1 if user1.primary_focus == user2.primary_focus else 0.5
-
-    # Weighted sum of all scores
-    total_weight = (
-        personality_weight + confrontational_weight + religion_weight + sleep_schedule_weight +
-        age_weight + drug_use_weight + social_preference_weight + activities_weight + busy_weight +
-        significant_other_weight + major_weight + year_weight + snore_weight +
-        values_in_roommate_weight + primary_focus_weight
-    )
-
+    # Calculate the weighted sum of all compatibility scores
     weighted_score = (
         (personality_score * personality_weight) +
         (confrontational_score * confrontational_weight) +
@@ -217,8 +182,9 @@ def calculate_compatibility(user1, user2):
         (primary_focus_score * primary_focus_weight)
     )
 
-    # Normalize the score to a scale of 0 to 10
-    compatibility_score = (weighted_score / total_weight) * 10
+    # Scale the compatibility score to a range of 0 to 100
+    compatibility_score = weighted_score * 10  # since the total weight sums to 10
+
     return round(compatibility_score, 2)
 
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
