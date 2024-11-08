@@ -235,22 +235,22 @@ class UserProfile:
         self.values_in_roommate = values_in_roommate
         self.primary_focus = primary_focus
 
+import streamlit as st
 
 def get_user_profile():
-    # Main title
     st.title("Room_Mates/The Future of Roommate Matching")
-
+    
     # Subtitle for Alpha test notice
     st.write("### This is an Alpha test")
     st.write("Feedback to kl608260@wne.edu very much appreciated.")
     st.write("If no matches are found due to a small number of users, try again in a few days.")
-
+    
     # Collect user inputs
     name = st.text_input("What is your name?")
     email_or_instagram = st.text_input("Please type email, Instagram, or preferred way to be reached out to when matched:")
-
     
-    cleanliness = st.selectbox("How clean are you?", 
+
+     cleanliness = st.selectbox("How clean are you?", 
                                options=[1, 2, 3], 
                                format_func=lambda x: {
                                    1: "1: I have an assigned day weekly for deep cleaning, dishes are never in the sink, and my cleaning routine is set",
