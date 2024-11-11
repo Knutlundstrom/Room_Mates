@@ -264,10 +264,14 @@ def get_user_profile():
 age = st.number_input("Enter your age:", min_value=0, max_value=120)
 gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
 
+import streamlit as st
+
+# Sleep schedule selectbox
 sleep_schedule = st.selectbox(
     "What is your sleep schedule?", 
     [1, 2], 
-    format_func=lambda x: "1: I have a set time I go to sleep and wake up always" if x == 1 else "2: I have no set routine, depends on how I am feeling and the day"
+    format_func=lambda x: "1: I have a set time I go to sleep and wake up always" 
+    if x == 1 else "2: I have no set routine, depends on how I am feeling and the day"
 )
 
 # Personality type dropdown with labels
@@ -282,14 +286,16 @@ personality_type = st.selectbox(
     ][x - 1]
 )
 
-
-    social_battery = st.selectbox("What is your social preference?", 
-                                  [1, 2, 3], 
-                                  format_func=lambda x: {
-                                      1: "1: No people over and don't seek out social interaction",
-                                      2: "2: Occasionally people over and enjoy going out for dinner or drinks once a week",
-                                      3: "3: Always people over and always wanting to go out no matter the day"
-                                  }[x])
+# Social battery selectbox
+social_battery = st.selectbox(
+    "What is your social preference?", 
+    [1, 2, 3], 
+    format_func=lambda x: {
+        1: "1: No people over and don't seek out social interaction",
+        2: "2: Occasionally people over and enjoy going out for dinner or drinks once a week",
+        3: "3: Always people over and always wanting to go out no matter the day"
+    }[x]
+)
 
     confrontational_behavior = st.selectbox("What is your conflict tolerance?", 
                                             [1, 2], 
