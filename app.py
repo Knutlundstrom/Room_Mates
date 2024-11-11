@@ -247,7 +247,7 @@ def get_user_profile():
     
     # Collect user inputs
     name = st.text_input("What is your name?")
-    email_or_instagram = st.text_input("Please type email, Instagram, or preferred way to be reached out to when matched:")
+    email_or_instagram = st.text_input("Please type email to be reached out to when matched:")
 
     # Collect cleanliness preference
     cleanliness = st.selectbox(
