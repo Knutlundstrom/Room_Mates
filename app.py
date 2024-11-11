@@ -365,19 +365,24 @@ def main():
 
     # Only proceed if the user has submitted the profile
     if user_profile:
-        # Step 2: Save the user profile to the database
-        save_user_profile(user_profile)
-
-        # Step 3: Retrieve all profiles from the database
+        # Step 2: Retrieve all profiles from the database
         all_user_profiles = get_all_user_profiles()
 
-        # Step 4: Exclude the current user from potential roommates
+        # Step 3: Check if there's already a user with the same email
+        user_exists = any(user.email_or_instagram == user_profile.email_or_instagram for user in all_user_profiles)
+
+        # Step 4: Save the profile only if it doesn't already exist
+        if not user_exists:
+            save_user_profile(user_profile)
+        else:
+            print("User profile already exists, skipping save to prevent duplication.")
+
+        # Step 5: Exclude the current user from potential roommates
         potential_roommates = [user for user in all_user_profiles if user.email_or_instagram != user_profile.email_or_instagram]
 
-        # Step 5: Find and display top matches
+        # Step 6: Find and display top matches
         find_and_display_top_matches(user_profile, potential_roommates)
 
 # Ensure main() runs if the script is executed directly
 if __name__ == "__main__":
     main()
-
