@@ -259,7 +259,6 @@ cleanliness = st.selectbox(
     }[x]
 )
 
-
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
 
     gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
