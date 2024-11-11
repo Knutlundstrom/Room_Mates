@@ -236,6 +236,7 @@ class UserProfile:
         self.primary_focus = primary_focus
 
 import streamlit as st
+import re
 
 def get_user_profile():
     st.title("Room_Mates/The Future of Roommate Matching")
@@ -248,6 +249,12 @@ def get_user_profile():
     # Collect user inputs
     name = st.text_input("What is your name?")
     email_or_instagram = st.text_input("Please type email to be reached out to when matched:")
+
+    # Validate email
+    if email_or_instagram:
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|.+\.edu)$", email_or_instagram):
+            st.error("Please enter a valid email address ending with .edu, @gmail.com, or @outlook.com.")
+            return None  # Exit the function if the email is invalid
 
     # Collect cleanliness preference
     cleanliness = st.selectbox(
