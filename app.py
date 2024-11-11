@@ -263,8 +263,7 @@ cleanliness = st.selectbox(
 age = st.number_input("Enter your age:", min_value=0, max_value=120)
 gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
 
-
-    sleep_schedule = st.selectbox("What is your sleep schedule?", 
+sleep_schedule = st.selectbox("What is your sleep schedule?", 
                                   [1, 2], 
                                   format_func=lambda x: "1: I have a set time I go to sleep and wake up always" if x == 1 else "2: I have no set routine, depends on how I am feeling and the day")
 
