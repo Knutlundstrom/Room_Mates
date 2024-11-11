@@ -297,7 +297,7 @@ social_battery = st.selectbox(
     }[x]
 )
 
-    confrontational_behavior = st.selectbox("What is your conflict tolerance?", 
+confrontational_behavior = st.selectbox("What is your conflict tolerance?", 
                                             [1, 2], 
                                             format_func=lambda x: "1: Confrontational" if x == 1 else "2: Non-confrontational")
 
