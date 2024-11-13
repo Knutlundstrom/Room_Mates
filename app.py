@@ -127,50 +127,51 @@ def get_all_user_profiles():
     finally:
         cursor.close()
         conn.close()
-
-def calculate_compatibility(user1, user2):
-    weights = {
-        "personality": 0.25,
-        "confrontational": 0.25,
-        "religion": 0.25,
-        "sleep_schedule": 0.5,
-        "age": 0.00,
-        "drug_use": 0.25,
-        "social_preference": 1.25,
-        "activities": 1.25,
-        "busy": 0.5,
-        "significant_other": 0.25,
-        "major": 0.5,
-        "year": 1.25,
-        "snore": 0.25,
-        "values_in_roommate": 0.75,
-        "primary_focus": 0.75,
+def get_weights(max_attempts=3):
+    """Prompts the user to enter weights for each criterion with a better user experience."""
+    default_weights = {
+        "personality": 0.25, "confrontational": 0.25, "religion": 0.25, "sleep_schedule": 0.5,
+        "age": 0.0, "drug_use": 0.25, "social_preference": 1.25, "activities": 1.25,
+        "busy": 0.5, "significant_other": 0.25, "major": 0.5, "year": 1.25,
+        "snore": 0.25, "values_in_roommate": 0.75, "primary_focus": 0.75
     }
+    
+    criteria = list(default_weights.keys())
+    print("Assign a weight to each question (total must sum to 10). Suggested defaults shown in parentheses.")
+    
+    for attempt in range(max_attempts):
+        weights = {}
+        total_weight = 0.0
+        remaining_weight = 10.0  # Start with 10 as the total weight
 
-    scores = {
-        "personality": 1 if user1.personality_type == user2.personality_type else 0,
-        "confrontational": 1 if user1.confrontational_behavior == user2.confrontational_behavior else 0,
-        "religion": 1 if user1.religion == user2.religion else 0,
-        "sleep_schedule": 1 if user1.sleep_schedule == user2.sleep_schedule else 0,
-        "age": 1 if abs(user1.age - user2.age) <= 10 else 0,
-        "drug_use": 1 if user1.drug_use == user2.drug_use else 0,
-        "social_preference": 1 if user1.social_battery == user2.social_battery else 0,
-        "activities": 1 if user1.activities == user2.activities else 0,
-        "busy": 1 if user1.busy == user2.busy else 0,
-        "significant_other": 1 if user1.significant_other == user2.significant_other else 0,
-        "major": 1 if user1.major == user2.major else 0,
-        "year": 1 if user1.year == user2.year else 0,
-        "snore": 1 if user1.snore == user2.snore else 0,
-        "values_in_roommate": 1 if user1.values_in_roommate == user2.values_in_roommate else 0,
-        "primary_focus": 1 if user1.primary_focus == user2.primary_focus else 0,
-    }
+        for criterion in criteria:
+            while True:
+                print(f"\nCurrent total: {total_weight}, Remaining: {remaining_weight}")
+                try:
+                    weight = input(f"Enter weight for {criterion} (default: {default_weights[criterion]}): ")
+                    weight = float(weight) if weight else default_weights[criterion]  # Use default if blank
+                    
+                    if weight < 0:
+                        print("Weight must be a non-negative number.")
+                    elif weight > remaining_weight:
+                        print(f"Weight exceeds remaining limit. You can only assign up to {remaining_weight}.")
+                    else:
+                        weights[criterion] = weight
+                        total_weight += weight
+                        remaining_weight -= weight  # Update remaining weight
+                        break
+                except ValueError:
+                    print("Invalid input. Please enter a numeric value.")
+        
+        # Check if the total weight is exactly 10
+        if round(total_weight, 2) == 10:
+            return weights
+        else:
+            print(f"\nAttempt {attempt + 1} of {max_attempts} failed. Total weight was {total_weight}. Please try again.\n")
+    
+    print("Max attempts reached. Reverting to default weights.")
+    return default_weights
 
-    weighted_score = sum(scores[key] * weights[key] for key in scores)
-    total_weight = sum(weights.values())
-    compatibility_score = (weighted_score / total_weight) * 100
-    return round(compatibility_score)  # Round to nearest integer
-    return compatibility_score
-    return round(compatibility_score, 2)
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
     matches = []
     for roommate in potential_roommates:
