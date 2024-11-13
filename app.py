@@ -183,10 +183,9 @@ def calculate_compatibility(user1, user2):
     )
 
     # Scale the compatibility score to a range of 0 to 100
-    compatibility_score = weighted_score * 10  # since the total weight sums to 10
+    compatibility_score = (weighted_score / 10) * 100  # Scale to 0-100
 
     return round(compatibility_score, 2)
-
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
     matches = []
     for roommate in potential_roommates:
