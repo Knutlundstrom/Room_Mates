@@ -168,7 +168,7 @@ def calculate_compatibility(user1, user2):
     weighted_score = sum(scores[key] * weights[key] for key in scores)
     total_weight = sum(weights.values())
     compatibility_score = (weighted_score / total_weight) * 100
-    
+    return round(compatibility_score)  # Round to nearest integer
     return compatibility_score
     return round(compatibility_score, 2)
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
