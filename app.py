@@ -130,21 +130,21 @@ def get_all_user_profiles():
 
 def calculate_compatibility(user1, user2):
     # Updated weights for higher priority factors (ensuring total weight sums to 10 for 0-10 scaling)
-    personality_weight = 0.5
+    personality_weight = 0.25
     confrontational_weight = 0.25
     religion_weight = 0.25
     sleep_schedule_weight = 0.5
-    age_weight = 0.25
+    age_weight = 0.00
     drug_use_weight = 0.25
-    social_preference_weight = 1.5  # Higher weight
-    activities_weight = 1.5  # Higher weight
+    social_preference_weight = 1.25  # Higher weight
+    activities_weight = 1.25  # Higher weight
     busy_weight = 0.5
     significant_other_weight = 0.25
     major_weight = 0.5
-    year_weight = 1.5  # Higher weight
+    year_weight = 1.25  # Higher weight
     snore_weight = 0.25
-    values_in_roommate_weight = 1.5  # Higher weight
-    primary_focus_weight = 1.5  # Higher weight
+    values_in_roommate_weight = 0.75  # Higher weight
+    primary_focus_weight = 0.75  # Higher weight
 
     # Compatibility scores for each factor (1 if match, 0 if not)
     personality_score = 1 if user1.personality_type == user2.personality_type else 0
