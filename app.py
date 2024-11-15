@@ -344,60 +344,41 @@ def get_user_profile():
             communication_style, privacy_level, pets, temperature_preference
         )
 
-if st.button("Submit Profile"):
-    # Create the UserProfile instance
-    user_profile = UserProfile(
-        name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
-        personality_type, social_battery, confrontational_behavior, religion,
-        drug_use, activities, busy, significant_other, major, year,
-        snore, values_in_roommate, primary_focus, 
-        communication_style, privacy_level, pets, temperature_preference
-    )
+ # Save the profile to the database
+        try:
+            conn = connect_db()
+            cursor = conn.cursor()
+            insert_query = """
+            INSERT INTO user_profiles (
+                name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
+                personality_type, social_battery, confrontational_behavior, religion,
+                drug_use, activities, busy, significant_other, major, year, snore,
+                values_in_roommate, primary_focus, communication_style, privacy_level, pets, temperature_preference
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """
+            cursor.execute(insert_query, (
+                user_profile.name, user_profile.email_or_instagram, user_profile.cleanliness, user_profile.age,
+                user_profile.gender, user_profile.sleep_schedule, user_profile.personality_type,
+                user_profile.social_battery, user_profile.confrontational_behavior, user_profile.religion,
+                user_profile.drug_use, user_profile.activities, user_profile.busy,
+                user_profile.significant_other, user_profile.major, user_profile.year,
+                user_profile.snore, user_profile.values_in_roommate, user_profile.primary_focus,
+                user_profile.communication_style, user_profile.privacy_level, user_profile.pets,
+                user_profile.temperature_preference
+            ))
 
-    # Save the profile to the database directly here
-    try:
-        # Establish a database connection
-        conn = connect_db()
-        cursor = conn.cursor()
+            conn.commit()
+            st.success("Your profile has been saved successfully.")
 
-        # SQL Insert query
-        insert_query = """
-        INSERT INTO user_profiles (
-            name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
-            personality_type, social_battery, confrontational_behavior, religion,
-            drug_use, activities, busy, significant_other, major, year, snore,
-            values_in_roommate, primary_focus, communication_style, privacy_level, pets, temperature_preference
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-        """
+        except Exception as e:
+            st.error(f"Error saving user profile: {e}")
 
-        # Execute the query with user profile data
-        cursor.execute(insert_query, (
-            user_profile.name, user_profile.email_or_instagram, user_profile.cleanliness, user_profile.age,
-            user_profile.gender, user_profile.sleep_schedule, user_profile.personality_type,
-            user_profile.social_battery, user_profile.confrontational_behavior, user_profile.religion,
-            user_profile.drug_use, user_profile.activities, user_profile.busy,
-            user_profile.significant_other, user_profile.major, user_profile.year,
-            user_profile.snore, user_profile.values_in_roommate, user_profile.primary_focus,
-            user_profile.communication_style, user_profile.privacy_level, user_profile.pets,
-            user_profile.temperature_preference
-        ))
+        finally:
+            cursor.close()
+            conn.close()
 
-        # Commit changes to the database
-        conn.commit()
-        st.success("Your profile has been saved successfully.")
-
-    except Exception as e:
-        # Handle any exceptions during database operations
-        st.error(f"Error saving user profile: {e}")
-
-    finally:
-        # Ensure resources are properly closed
-        cursor.close()
-        conn.close()
-
-# If the profile was not submitted, return None
-return None
-
+    # If the profile was not submitted, return None
+    return None
 
 # Updated function to find and display top matches with new fields
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
