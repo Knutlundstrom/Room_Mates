@@ -280,63 +280,108 @@ class UserProfile:
         self.pets = pets
         self.temperature_preference = temperature_preference
 
-
 def get_user_profile():
-    st.title("Room_Mates/The Future of Roommate Matching")
-    
+    st.title("Roommates Matching Service")
+
     # Basic Info
     name = st.text_input("What is your name?")
-    email_or_instagram = st.text_input("Please type your contact info for matches:")
+    email_or_instagram = st.text_input("Enter preferred contact (email, Instagram, etc.):")
 
-    # Email validation
-    if email_or_instagram and not re.match(r"^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|.+\.edu)$", email_or_instagram):
-        st.error("Please enter a valid email address ending with .edu, @gmail.com, or @outlook.com.")
-        return None  # Exit function if email invalid
-
-    # Roommate Preference Questions
-    cleanliness = st.selectbox("How clean are you?", [1, 2, 3], 
-                               format_func=lambda x: {1: "Very clean", 2: "Moderate", 3: "Minimal"}[x])
+    # Questions with standardized numeric responses
+    cleanliness = st.selectbox("How clean are you?", [1, 2, 3], format_func=lambda x: {
+        1: "Very clean, routine",
+        2: "Moderate, clean when needed",
+        3: "Minimal cleaning"
+    }[x])
 
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
-    gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "Male" if x == 1 else "Female")
-    sleep_schedule = st.selectbox("What is your sleep schedule?", [1, 2], 
-                                  format_func=lambda x: {1: "Consistent", 2: "Flexible"}[x])
-    personality_type = st.selectbox("Myers-Briggs personality type:", range(1, 17), 
-                                    format_func=lambda x: [
-                                        "ENTJ", "ENTP", "ESFJ", "ESFP", "ESTJ", "ESTP", "INFJ", "INFP", 
-                                        "INTP", "ISFP", "ENFJ", "ENFP", "INTJ", "ISFJ", "ISTP", "ISTJ"
-                                    ][x - 1])
-    social_battery = st.selectbox("Social preference?", [1, 2, 3], 
-                                  format_func=lambda x: {1: "Minimal", 2: "Occasional gatherings", 3: "Very social"}[x])
-    confrontational_behavior = st.selectbox("Conflict tolerance?", [1, 2], 
-                                            format_func=lambda x: "Direct" if x == 1 else "Avoids conflict")
-    religion = st.selectbox("Religious influence?", [1, 2], 
-                            format_func=lambda x: "Practicing" if x == 1 else "No impact")
-    drug_use = st.selectbox("Drug use?", [1, 2, 3], 
-                            format_func=lambda x: {1: "Comfortable with frequent use", 2: "Occasionally okay", 3: "Not comfortable"}[x])
-    activities = st.selectbox("Preferred activities?", [1, 2], 
-                              format_func=lambda x: "Active" if x == 1 else "Relaxed")
-    busy = st.selectbox("Daily planning?", [1, 2], format_func=lambda x: "Planned" if x == 1 else "Spontaneous")
-    significant_other = st.selectbox("Significant other visits?", [1, 2, 3], 
-                                     format_func=lambda x: {1: "Frequently", 2: "Occasionally", 3: "No"}[x])
-    major = st.selectbox("What is your major?", [1, 2, 3, 4], 
-                         format_func=lambda x: {1: "Business", 2: "STEM", 3: "Health", 4: "Arts"}[x])
-    year = st.selectbox("Year in school?", [1, 2, 3, 4, 5], 
-                        format_func=lambda x: {1: "Freshman", 2: "Sophomore", 3: "Junior", 4: "Senior", 5: "Graduate"}[x])
-    snore = st.selectbox("Do you snore?", [1, 2], format_func=lambda x: "Yes" if x == 1 else "No")
-    values_in_roommate = st.selectbox("Values in roommate?", [1, 2, 3], 
-                                      format_func=lambda x: {1: "Supportive", 2: "Direct", 3: "Shared activities"}[x])
-    primary_focus = st.selectbox("Primary focus?", [1, 2], format_func=lambda x: "School" if x == 1 else "Sports/Other")
-    communication_style = st.selectbox("Communication style?", [1, 2], format_func=lambda x: "Direct" if x == 1 else "Indirect")
-    privacy_level = st.selectbox("Privacy level?", [1, 2, 3], 
-                                 format_func=lambda x: {1: "Very private", 2: "Moderate", 3: "Open"}[x])
-    pets = st.selectbox("Comfortable with pets?", [1, 2, 3], 
-                        format_func=lambda x: {1: "Comfortable", 2: "No preference", 3: "Not comfortable"}[x])
-    temperature_preference = st.selectbox("Temperature preference?", [1, 2, 3], 
-                                          format_func=lambda x: {1: "Cool", 2: "Warm", 3: "No preference"}[x])
+    gender = st.selectbox("Gender:", [1, 2], format_func=lambda x: "Male" if x == 1 else "Female")
 
+    sleep_schedule = st.selectbox("What is your sleep schedule?", [1, 2], format_func=lambda x: {
+        1: "Consistent bedtime/wake time",
+        2: "Flexible, varies by day"
+    }[x])
+
+    personality_type = st.selectbox("Myers-Briggs personality type:", range(1, 17), format_func=lambda x: [
+        "ENTJ", "ENTP", "ESFJ", "ESFP", "ESTJ", "ESTP", "INFJ", "INFP", "INTP", "ISFP",
+        "ENFJ", "ENFP", "INTJ", "ISFJ", "ISTP", "ISTJ"
+    ][x - 1])
+
+    social_battery = st.selectbox("Social preference?", [1, 2, 3], format_func=lambda x: {
+        1: "Minimal interaction, no guests",
+        2: "Occasional social gatherings",
+        3: "Very social, frequent guests"
+    }[x])
+
+    confrontational_behavior = st.selectbox("Conflict tolerance?", [1, 2], format_func=lambda x: "Direct" if x == 1 else "Avoids confrontation")
+
+    religion = st.selectbox("Religious influence?", [1, 2], format_func=lambda x: "Actively practicing" if x == 1 else "No impact")
+
+    drug_use = st.selectbox("Drug use?", [1, 2, 3], format_func=lambda x: {
+        1: "Comfortable with frequent use",
+        2: "Occasionally okay",
+        3: "Not comfortable"
+    }[x])
+
+    activities = st.selectbox("Preferred activities?", [1, 2], format_func=lambda x: "Active" if x == 1 else "Relaxed")
+
+    busy = st.selectbox("Daily planning?", [1, 2], format_func=lambda x: "Planned" if x == 1 else "Spontaneous")
+
+    significant_other = st.selectbox("Significant other visits?", [1, 2, 3], format_func=lambda x: {
+        1: "Yes, frequently",
+        2: "Occasionally",
+        3: "No"
+    }[x])
+
+    major = st.selectbox("What is your major?", [1, 2, 3, 4], format_func=lambda x: {
+        1: "Business/Management",
+        2: "STEM",
+        3: "Health/Medicine",
+        4: "Arts/Humanities"
+    }[x])
+
+    year = st.selectbox("School year?", [1, 2, 3, 4, 5], format_func=lambda x: {
+        1: "Freshman",
+        2: "Sophomore",
+        3: "Junior",
+        4: "Senior",
+        5: "Graduate"
+    }[x])
+
+    snore = st.selectbox("Do you snore?", [1, 2], format_func=lambda x: "Yes" if x == 1 else "No")
+
+    values_in_roommate = st.selectbox("Values in roommate?", [1, 2, 3], format_func=lambda x: {
+        1: "Supportive",
+        2: "Honest/Direct",
+        3: "Shared activities"
+    }[x])
+
+    primary_focus = st.selectbox("Primary focus?", [1, 2], format_func=lambda x: "School" if x == 1 else "Sports/Other")
+
+    communication_style = st.selectbox("Communication style?", [1, 2], format_func=lambda x: "Direct" if x == 1 else "Indirect")
+
+    privacy_level = st.selectbox("Privacy level?", [1, 2, 3], format_func=lambda x: {
+        1: "Very private",
+        2: "Moderately private",
+        3: "Open"
+    }[x])
+
+    pets = st.selectbox("Comfortable with pets?", [1, 2, 3], format_func=lambda x: {
+        1: "Comfortable with pets",
+        2: "No preference",
+        3: "Not comfortable"
+    }[x])
+
+    temperature_preference = st.selectbox("Temperature preference?", [1, 2, 3], format_func=lambda x: {
+        1: "Cooler",
+        2: "Warmer",
+        3: "No preference"
+    }[x])
+
+    # Submit profile creation
     if st.button("Submit Profile"):
-        return UserProfile(
+        # Create UserProfile instance
+        user_profile = UserProfile(
             name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
             personality_type, social_battery, confrontational_behavior, religion,
             drug_use, activities, busy, significant_other, major, year,
@@ -344,7 +389,7 @@ def get_user_profile():
             communication_style, privacy_level, pets, temperature_preference
         )
 
- # Save the profile to the database
+        # Save the profile to the database
         try:
             conn = connect_db()
             cursor = conn.cursor()
@@ -379,6 +424,7 @@ def get_user_profile():
 
     # If the profile was not submitted, return None
     return None
+
 
 # Updated function to find and display top matches with new fields
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
