@@ -417,6 +417,47 @@ def main():
         potential_roommates = [user for user in all_user_profiles if user.email_or_instagram != user_profile.email_or_instagram]
 
         # Step 4: Find and display top matches
+ def get_all_user_profiles():
+    # Establish a database connection
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+ def get_all_user_profiles():
+    # Establish a database connection
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    # Execute a query to retrieve all user profiles
+    query = """
+    SELECT name, email_or_instagram, cleanliness, age, gender, sleep_schedule, 
+           personality_type, social_battery, confrontational_behavior, religion,
+           drug_use, activities, busy, significant_other, major, year, snore,
+           values_in_roommate, primary_focus, communication_style, privacy_level, pets, temperature_preference
+    FROM user_profiles;
+    """
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    # Map database rows to UserProfile instances
+    user_profiles = [UserProfile(*row) for row in rows]
+    return user_profiles
+
+def main():
+    # Step 1: Collect user profile
+    user_profile = get_user_profile()
+
+    if user_profile:
+        # Step 2: Retrieve all profiles from the database
+        all_user_profiles = get_all_user_profiles()
+
+        # Step 3: Exclude the current user from potential roommates
+        potential_roommates = [user for user in all_user_profiles if user.email_or_instagram != user_profile.email_or_instagram]
+
+        # Step 4: Find and display top matches
         find_and_display_top_matches(user_profile, potential_roommates)
 
 if __name__ == "__main__":
