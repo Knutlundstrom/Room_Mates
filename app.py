@@ -417,11 +417,6 @@ def main():
         potential_roommates = [user for user in all_user_profiles if user.email_or_instagram != user_profile.email_or_instagram]
 
         # Step 4: Find and display top matches
- def get_all_user_profiles():
-    # Establish a database connection
-    conn = connect_db()
-    cursor = conn.cursor()
-    
 def get_all_user_profiles():
     # Establish a database connection
     conn = connect_db()
