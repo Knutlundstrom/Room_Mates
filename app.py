@@ -56,10 +56,25 @@ class UserProfile:
 # Function to gather user input for profile creation
 def get_user_profile():
     st.title("Roommates Matching Service")
-    
+
     # Basic Info
     name = st.text_input("What is your name?")
     email_or_instagram = st.text_input("Enter preferred contact (email, Instagram, etc.):")
+
+    # Before proceeding, check if the email already exists in the database
+    if st.button("Check Availability"):
+        conn = connect_db()
+        cursor = conn.cursor()
+        query = "SELECT COUNT(*) FROM user_profiles WHERE email_or_instagram = %s;"
+        cursor.execute(query, (email_or_instagram,))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if result[0] > 0:
+            st.error("This email or Instagram handle is already in use. Please enter a unique one.")
+            return None
+        else:
+            st.success("This email or Instagram handle is available.")
 
     # Questions with standardized numeric responses
     cleanliness = st.selectbox("How clean are you?", [1, 2, 3], format_func=lambda x: {
@@ -132,7 +147,6 @@ def get_user_profile():
 
     primary_focus = st.selectbox("Primary focus?", [1, 2], format_func=lambda x: "School" if x == 1 else "Sports/Other")
 
-    # Additional preference questions
     communication_style = st.selectbox("Communication style?", [1, 2], format_func=lambda x: "Direct" if x == 1 else "Indirect")
 
     privacy_level = st.selectbox("Privacy level?", [1, 2, 3], format_func=lambda x: {
@@ -155,14 +169,56 @@ def get_user_profile():
 
     # Submit profile creation
     if st.button("Submit Profile"):
-        return UserProfile(
+        # Create UserProfile instance
+        user_profile = UserProfile(
             name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
             personality_type, social_battery, confrontational_behavior, religion,
             drug_use, activities, busy, significant_other, major, year,
-            snore, values_in_roommate, primary_focus,
+            snore, values_in_roommate, primary_focus, 
             communication_style, privacy_level, pets, temperature_preference
         )
+
+        # Save the profile to the database
+        try:
+            conn = connect_db()
+            cursor = conn.cursor()
+            insert_query = """
+            INSERT INTO user_profiles (
+                name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
+                personality_type, social_battery, confrontational_behavior, religion,
+                drug_use, activities, busy, significant_other, major, year, snore,
+                values_in_roommate, primary_focus, communication_style, privacy_level, pets, temperature_preference
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """
+            cursor.execute(insert_query, (
+                user_profile.name, user_profile.email_or_instagram, user_profile.cleanliness, user_profile.age,
+                user_profile.gender, user_profile.sleep_schedule, user_profile.personality_type,
+                user_profile.social_battery, user_profile.confrontational_behavior, user_profile.religion,
+                user_profile.drug_use, user_profile.activities, user_profile.busy,
+                user_profile.significant_other, user_profile.major, user_profile.year,
+                user_profile.snore, user_profile.values_in_roommate, user_profile.primary_focus,
+                user_profile.communication_style, user_profile.privacy_level, user_profile.pets,
+                user_profile.temperature_preference
+            ))
+
+            conn.commit()
+            st.success("Your profile has been saved successfully.")
+
+            # Find and display top matches immediately after submitting profile
+            all_user_profiles = get_all_user_profiles()
+            potential_roommates = [user for user in all_user_profiles if user.email_or_instagram != user_profile.email_or_instagram]
+            find_and_display_top_matches(user_profile, potential_roommates)
+
+        except Exception as e:
+            st.error(f"Error saving user profile: {e}")
+
+        finally:
+            cursor.close()
+            conn.close()
+
+    # If the profile was not submitted, return None
     return None
+
 
 # Compatibility calculation with additional attributes
 def calculate_compatibility(user1, user2, weights=None):
