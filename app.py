@@ -138,7 +138,7 @@ def calculate_compatibility(user1, user2):
         "busy": 1.0, "significant_other": 0.5, "major": 0.5, "year": 0.5,
         "snore": 0.5, "values_in_roommate": 1.0, "primary_focus": 0.5,
         "communication_style": 0.5, "privacy_level": 0.5, "pets": 0.5, "temperature_preference": 0.5,
-        "cleanliness": 1.0
+        "cleanliness": 0.5
     }
     
     # Compatibility score for each attribute comparison
@@ -165,12 +165,11 @@ def calculate_compatibility(user1, user2):
         "cleanliness": 1 if user1.cleanliness == user2.cleanliness else 0
     }
     
-    # Calculate the weighted compatibility score
+    # Calculate the weighted compatibility score using default weights
     weighted_score = sum(scores[key] * default_weights[key] for key in scores)
     compatibility_score = (weighted_score / sum(default_weights.values())) * 100  # Normalize by total weight for percentage
     
-     return round(compatibility_score)
-
+    return round(compatibility_score)  # Round the score to the nearest whole number
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
     matches = []
     for roommate in potential_roommates:
