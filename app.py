@@ -47,7 +47,6 @@ class UserProfile:
         self.privacy_level = privacy_level
         self.pets = pets
         self.temperature_preference = temperature_preference
-
 def save_user_profile(user1):
     try:
         conn = connect_db()  # You need to define or import this function
