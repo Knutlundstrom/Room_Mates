@@ -294,10 +294,18 @@ def get_user_profile():
     primary_focus = st.selectbox("What is your primary focus?", 
                                  [1, 2], 
                                  format_func=lambda x: "1: School" if x == 1 else "2: Sports/Other")
-    communication_style = st.selectbox("What is your communication style?", ["Direct", "Indirect"])
-    privacy_level = st.selectbox("What is your privacy preference?", ["High", "Moderate", "Low"])
-    pets = st.selectbox("Do you have pets?", ["Yes", "No"])
-    temperature_preference = st.selectbox("What is your temperature preference?", ["Warm", "Cool", "Neutral"])
+    communication_style = st.selectbox("What is your communication style?", [1, 2], format_func=lambda x: "1: Direct" if x == 1 else "2: Indirect")
+    privacy_level = st.selectbox("What is your privacy preference?", [1, 2, 3], format_func=lambda x: {
+        1: "1: High",
+        2: "2: Moderate",
+        3: "3: Low"
+    }[x])
+    pets = st.selectbox("Do you have pets?", [1, 2], format_func=lambda x: "1: Yes" if x == 1 else "2: No")
+    temperature_preference = st.selectbox("What is your temperature preference?", [1, 2, 3], format_func=lambda x: {
+        1: "1: Warm",
+        2: "2: Cool",
+        3: "3: Neutral"
+    }[x])
 
     # Place the Submit Profile button at the end
     if st.button("Submit Profile"):
@@ -310,6 +318,7 @@ def get_user_profile():
             privacy_level, pets, temperature_preference
         )
     return None
+
 
 def main():
     # Step 1: Collect user profile
