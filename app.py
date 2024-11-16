@@ -340,6 +340,17 @@ def get_user_profile():
                                                2: "2: Cool",
                                                3: "3: Neutral"
                                            }[x])
+# Place the Submit Profile button at the end
+    if st.button("Submit Profile"):
+        # Create and return the UserProfile object
+        return UserProfile(
+            name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
+            personality_type, social_battery, confrontational_behavior, religion,
+            drug_use, activities, busy, significant_other, major, year,
+            snore, values_in_roommate, primary_focus, privacy_level, pets, temperature_preference
+        )
+    return None
+
 
 def main():
     # Step 1: Collect user profile
