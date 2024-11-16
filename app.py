@@ -211,7 +211,6 @@ def get_user_profile():
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
     gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
 
-    # Collect cleanliness preference
     cleanliness = st.selectbox(
         "How clean are you?", 
         options=[1, 2, 3], 
@@ -339,17 +338,17 @@ def get_user_profile():
                                                2: "2: Cool",
                                                3: "3: Neutral"
                                            }[x])
-# Place the Submit Profile button at the end
+    # Place the Submit Profile button at the end
     if st.button("Submit Profile"):
         # Create and return the UserProfile object
         return UserProfile(
             name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
             personality_type, social_battery, confrontational_behavior, religion,
             drug_use, activities, busy, significant_other, major, year,
-            snore, values_in_roommate, primary_focus, privacy_level, pets, temperature_preference
+            snore, values_in_roommate, primary_focus, communication_style,
+            privacy_level, pets, temperature_preference
         )
     return None
-
 
 def main():
     # Step 1: Collect user profile
