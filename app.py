@@ -253,9 +253,15 @@ def get_user_profile():
     
     confrontational_behavior = st.selectbox("What is your conflict tolerance?", 
                                             [1, 2], 
-                                            format_func=lambda x: "1: Religion = st.selectbox("What is your religious influence?", 
-                        [1, 2], 
-                        format_func=lambda x: "1: Actively practicing" if x == 1 else "2: No impact"))
+                                            format_func=lambda x: "1: Confrontational" if x == 1 else "2: Non-confrontational")
+
+    religion = st.selectbox("What is your religious influence?", 
+                            [1, 2, 3], 
+                            format_func=lambda x: {
+                                1: "1: Massive role in daily life",
+                                2: "2: Occasionally important",
+                                3: "3: Not important"
+                            }[x])
 
     drug_use = st.selectbox("What is your stance on drug use?", 
                             [1, 2, 3], 
@@ -334,19 +340,6 @@ def get_user_profile():
                                                2: "2: Cool",
                                                3: "3: Neutral"
                                            }[x])
-
-    # Place the Submit Profile button at the end
-    if st.button("Submit Profile"):
-        # Create and return the UserProfile object
-        return UserProfile(
-            name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
-            personality_type, social_battery, confrontational_behavior, religion,
-            drug_use, activities, busy, significant_other, major, year,
-            snore, values_in_roommate, primary_focus, communication_style,
-            privacy_level, pets, temperature_preference
-        )
-    return None
-
 
 def main():
     # Step 1: Collect user profile
