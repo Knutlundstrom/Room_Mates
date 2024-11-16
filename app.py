@@ -126,10 +126,10 @@ def get_all_user_profiles():
         if conn:
             conn.close()
 
-def calculate_compatibility(user1, user2, weights=None):
+def calculate_compatibility(user1, user2):
     """
-    Calculates compatibility score between two users based on various criteria.
-    Uses provided weights if available, otherwise defaults to pre-defined weights.
+    Calculate compatibility score between two users based on various attributes.
+    The score is calculated using predefined weights for each attribute.
     """
     # Default weights that sum up to 10
     default_weights = {
@@ -137,11 +137,9 @@ def calculate_compatibility(user1, user2, weights=None):
         "age": 0.5, "drug_use": 0.5, "social_preference": 1.0, "activities": 1.0,
         "busy": 1.0, "significant_other": 0.5, "major": 0.5, "year": 0.5,
         "snore": 0.5, "values_in_roommate": 1.0, "primary_focus": 0.5,
-        "communication_style": 0.5, "privacy_level": 0.5, "pets": 0.5, "temperature_preference": 0.5
+        "communication_style": 0.5, "privacy_level": 0.5, "pets": 0.5, "temperature_preference": 0.5,
+        "cleanliness": 1.0
     }
-    
-    # Use default weights if none are provided
-    weights = weights if weights else default_weights
     
     # Compatibility score for each attribute comparison
     scores = {
@@ -168,10 +166,10 @@ def calculate_compatibility(user1, user2, weights=None):
     }
     
     # Calculate the weighted compatibility score
-    weighted_score = sum(scores[key] * weights[key] for key in scores)
-    compatibility_score = (weighted_score / sum(weights.values())) * 100  # Normalize by total weight for percentage
-
-    return round(compatibility_score, 2)  # Return the score rounded to two decimal places
+    weighted_score = sum(scores[key] * default_weights[key] for key in scores)
+    compatibility_score = (weighted_score / sum(default_weights.values())) * 100  # Normalize by total weight for percentage
+    
+    return compatibility_score
 
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
     matches = []
