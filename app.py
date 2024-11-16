@@ -169,7 +169,7 @@ def calculate_compatibility(user1, user2):
     weighted_score = sum(scores[key] * default_weights[key] for key in scores)
     compatibility_score = (weighted_score / sum(default_weights.values())) * 100  # Normalize by total weight for percentage
     
-    return compatibility_score
+     return round(compatibility_score)
 
 def find_and_display_top_matches(current_user, potential_roommates, top_n=5):
     matches = []
@@ -209,20 +209,20 @@ def get_user_profile():
             st.error("Please enter a valid email address ending with .edu, @gmail.com, or @outlook.com.")
             return None  # Exit the function if the email is invalid
 
-    # Collect cleanliness preference
-    cleanliness = st.selectbox(
-        "How clean are you?", 
-        options=[1, 2, 3], 
-        format_func=lambda x: {
-            1: "1: I have an assigned day weekly for deep cleaning, dishes are never in the sink, and my cleaning routine is set",
-            2: "2: I take care of my room that's it and leave dishes when I am tired",
-            3: "3: I clean when I feel like it or seems to be time"
-        }[x]
-    )
-
     # Collect additional user inputs
-    age = st.number_input("Enter your age:", min_value=0, max_value=120)
-    gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
+age = st.number_input("Enter your age:", min_value=0, max_value=120)
+gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
+
+# Collect cleanliness preference
+cleanliness = st.selectbox(
+    "How clean are you?", 
+    options=[1, 2, 3], 
+    format_func=lambda x: {
+        1: "1: I have a set weekly deep cleaning day, dishes are never in the sink, and my cleaning routine is set",
+        2: "2: I deep clean my room weekly",
+        3: "3: I occasionally clean my room"
+    }[x]
+)
     sleep_schedule = st.selectbox(
         "What is your sleep schedule?", 
         [1, 2], 
@@ -250,23 +250,30 @@ def get_user_profile():
     )
     confrontational_behavior = st.selectbox("What is your conflict tolerance?", 
                                             [1, 2], 
-                                            format_func=lambda x: "1: Confrontational" if x == 1 else "2: Non-confrontational")
-    religion = st.selectbox("What is your religious influence?", 
-                            [1, 2], 
-                            format_func=lambda x: "1: Actively practicing" if x == 1 else "2: No impact")
-    drug_use = st.selectbox("What is your stance on drug use?", 
-                            [1, 2], 
-                            format_func=lambda x: "1: Yes" if x == 1 else "2: No")
-    activities = st.selectbox("What activities do you prefer?", 
-                              [1, 2], 
-                              format_func=lambda x: "1: Movement-based" if x == 1 else "2: Video games/TV")
-    busy = st.selectbox("Do you plan your day?", 
+                                            format_func=lambda x: "1: religion = st.selectbox("What is your religious influence?", 
                         [1, 2], 
-                        format_func=lambda x: "1: Always planned" if x == 1 else "2: Go with the flow")
-    significant_other = st.selectbox("Do you have a significant other?", 
-                                     [1, 2], 
-                                     format_func=lambda x: "1: Yes" if x == 1 else "2: No")
-    major = st.selectbox("What is your major?", 
+                        format_func=lambda x: "1: Actively practicing" if x == 1 else "2: No impact")
+
+drug_use = st.selectbox("What is your stance on drug use?", 
+                        [1, 2, 3], 
+                        format_func=lambda x: "1: I am a frequent user of drugs" if x == 1 
+                                             else "2: Occasional and do not mind drugs" 
+                                             if x == 2 
+                                             else "3: Never use drugs and do not like them")
+
+activities = st.selectbox("What activities do you prefer?", 
+                          [1, 2], 
+                          format_func=lambda x: "1: Movement-based" if x == 1 else "2: Video games/TV")
+
+busy = st.selectbox("Do you plan your day?", 
+                    [1, 2], 
+                    format_func=lambda x: "1: Always planned" if x == 1 else "2: Go with the flow")
+
+significant_other = st.selectbox("Do you have a significant other?", 
+                                  [1, 2], 
+                                  format_func=lambda x: "1: Yes" if x == 1 else "2: No")    
+
+major = st.selectbox("What is your major?", 
                          [1, 2, 3, 4], 
                          format_func=lambda x: {
                              1: "1: Business/Management",
