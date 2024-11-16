@@ -211,15 +211,16 @@ def get_user_profile():
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
     gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
 
-    cleanliness = st.selectbox(
+   cleanliness = st.selectbox(
         "How clean are you?", 
         options=[1, 2, 3], 
         format_func=lambda x: {
-            1: "1: I have a set weekly deep cleaning day, dishes are never in the sink, and my cleaning routine is set",
-            2: "2: I deep clean my room weekly",
-            3: "3: I occasionally clean my room"
+            1: "1: Set day for deep cleaning weekly",
+            2: "2: Routinely clean my room",
+            3: "3: Clean my room when needed"
         }[x]
     )
+    
     
     sleep_schedule = st.selectbox(
         "What is your sleep schedule?", 
