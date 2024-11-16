@@ -103,12 +103,16 @@ def get_all_user_profiles():
             return []
 
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM User_Profiles")
+        cursor.execute("SELECT name, email_or_instagram, cleanliness, age, gender, sleep_schedule, "
+                       "personality_type, social_battery, confrontational_behavior, religion, "
+                       "drug_use, activities, busy, significant_other, major, year, snore, "
+                       "values_in_roommate, primary_focus, communication_style, privacy_level, "
+                       "pets, temperature_preference FROM User_Profiles")  # Exclude ID column
         rows = cursor.fetchall()
 
         profiles = []
         for row in rows:
-            profiles.append(UserProfile(*row))
+            profiles.append(UserProfile(*row))  # Ensure row has exactly 24 elements
 
         return profiles
 
