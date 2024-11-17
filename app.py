@@ -96,7 +96,7 @@ def save_user_profile(user1):
 
 def get_all_user_profiles():
     try:
-        conn = connect_db()
+        conn = connect_db()  # Ensure this function is defined to connect to your database
         if conn is None:
             st.write("Database connection failed. Please try again later.")
             return []
@@ -111,7 +111,11 @@ def get_all_user_profiles():
 
         profiles = []
         for row in rows:
-            profiles.append(UserProfile(*row))  # Ensure row has exactly 24 elements
+            # Ensure row has exactly 24 elements
+            if len(row) == 24:
+                profiles.append(UserProfile(*row))
+            else:
+                st.warning("Row does not have the expected number of elements.")
 
         return profiles
 
