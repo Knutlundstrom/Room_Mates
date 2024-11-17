@@ -133,9 +133,9 @@ def calculate_compatibility(user1, user2):
     # Default weights that sum up to 10
     default_weights = {
         "personality": 1.0, "confrontational": 1.0, "religion": 0.5, "sleep_schedule": 0.5,
-        "age": 0.5, "drug_use": 0.5, "social_preference": 1.0, "activities": 1.0,
+        "age": 0.0, "drug_use": 0.5, "social_preference": 1.0, "activities": 1.0,
         "busy": 1.0, "significant_other": 0.5, "major": 0.5, "year": 0.5,
-        "snore": 0.5, "values_in_roommate": 1.0, "primary_focus": 0.5,
+        "snore": 0.5, "values_in_roommate": 1.5, "primary_focus": 0.5,
         "communication_style": 0.5, "privacy_level": 0.5, "pets": 0.5, "temperature_preference": 0.5,
         "cleanliness": 0.5
     }
@@ -232,7 +232,13 @@ def get_user_profile():
     
     # Collect user inputs
     name = st.text_input("What is your name?")
+    if not name:
+        st.error("Name cannot be left blank.")
+        return None
     email_or_instagram = st.text_input("Please type email to be reached out to when matched:")
+    if not email_or_instagram:
+        st.error("Email cannot be left blank.")
+        return None
 
     # Validate email
     if email_or_instagram:
@@ -244,7 +250,7 @@ def get_user_profile():
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
     gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
 
-    cleanliness = st.selectbox(
+     cleanliness = st.selectbox(
         "How clean are you?", 
         options=[1, 2, 3], 
         format_func=lambda x: {
@@ -371,7 +377,6 @@ def get_user_profile():
                                                2: "2: Cool",
                                                3: "3: Neutral"
                                            }[x])
-    
     # Place the Submit Profile button at the end
     if st.button("Submit Profile"):
         # Create and return the UserProfile object
@@ -382,6 +387,8 @@ def get_user_profile():
             snore, values_in_roommate, primary_focus, communication_style,
             privacy_level, pets, temperature_preference
         )
+    return None
+
     return None
 def main():
     # Step 1: Collect user profile
