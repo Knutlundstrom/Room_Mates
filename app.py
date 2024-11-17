@@ -222,6 +222,39 @@ class UserProfile:
         self.pets = pets
         self.temperature_preference = temperature_preference
 
+import re
+import streamlit as st
+
+class UserProfile:
+    def __init__(self, name, email, cleanliness, age, gender, sleep_schedule,
+                 personality_type, social_battery, confrontational_behavior, religion,
+                 drug_use, activities, busy, significant_other, major, year,
+                 snore, values_in_roommate, primary_focus, communication_style,
+                 privacy_level, pets, temperature_preference):
+        self.name = name
+        self.email = email
+        self.cleanliness = cleanliness
+        self.age = age
+        self.gender = gender
+        self.sleep_schedule = sleep_schedule
+        self.personality_type = personality_type
+        self.social_battery = social_battery
+        self.confrontational_behavior = confrontational_behavior
+        self.religion = religion
+        self.drug_use = drug_use
+        self.activities = activities
+        self.busy = busy
+        self.significant_other = significant_other
+        self.major = major
+        self.year = year
+        self.snore = snore
+        self.values_in_roommate = values_in_roommate
+        self.primary_focus = primary_focus
+        self.communication_style = communication_style
+        self.privacy_level = privacy_level
+        self.pets = pets
+        self.temperature_preference = temperature_preference
+
 def get_user_profile():
     st.title("Room_Mates/The Future of Roommate Matching")
     
@@ -250,7 +283,7 @@ def get_user_profile():
     age = st.number_input("Enter your age:", min_value=0, max_value=120)
     gender = st.selectbox("Enter your gender:", [1, 2], format_func=lambda x: "1: Male" if x == 1 else "2: Female")
 
-         cleanliness = st.selectbox(
+    cleanliness = st.selectbox(
         "How clean are you?", 
         options=[1, 2, 3], 
         format_func=lambda x: {
@@ -377,6 +410,7 @@ def get_user_profile():
                                                2: "2: Cool",
                                                3: "3: Neutral"
                                            }[x])
+    
     # Place the Submit Profile button at the end
     if st.button("Submit Profile"):
         # Create and return the UserProfile object
@@ -387,8 +421,6 @@ def get_user_profile():
             snore, values_in_roommate, primary_focus, communication_style,
             privacy_level, pets, temperature_preference
         )
-    return None
-
     return None
 def main():
     # Step 1: Collect user profile
