@@ -108,7 +108,7 @@ def get_all_user_profiles():
                        "pets, temperature_preference FROM User_Profiles")  # Exclude ID column
         rows = cursor.fetchall()
 
-       profiles = []
+        profiles = []
         for row in rows:
             # Ensure row has exactly 23 elements (excluding ID)
             if len(row) == 23:
@@ -121,6 +121,7 @@ def get_all_user_profiles():
     except Exception as e:
         st.write(f"Error retrieving profiles: {e}")
         return []
+
     finally:
         if cursor:
             cursor.close()
