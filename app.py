@@ -49,7 +49,7 @@ class UserProfile:
         self.temperature_preference = temperature_preference
 def save_user_profile(user1):
     try:
-        conn = connect_db()  # You need to define or import this function
+        conn = connect_db()
         cursor = conn.cursor()
         insert_query = """
         INSERT INTO User_Profiles (
@@ -58,7 +58,7 @@ def save_user_profile(user1):
             drug_use, activities, busy, significant_other, major, year, snore,
             values_in_roommate, primary_focus, communication_style, privacy_level,
             pets, temperature_preference
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         data = (
             user1.name,
@@ -93,7 +93,6 @@ def save_user_profile(user1):
     finally:
         cursor.close()
         conn.close()
-
 def get_all_user_profiles():
     try:
         conn = connect_db()  # Ensure this function is defined to connect to your database
@@ -109,10 +108,10 @@ def get_all_user_profiles():
                        "pets, temperature_preference FROM User_Profiles")  # Exclude ID column
         rows = cursor.fetchall()
 
-        profiles = []
+       profiles = []
         for row in rows:
-            # Ensure row has exactly 24 elements
-            if len(row) == 24:
+            # Ensure row has exactly 23 elements (excluding ID)
+            if len(row) == 23:
                 profiles.append(UserProfile(*row))
             else:
                 st.warning("Row does not have the expected number of elements.")
@@ -122,7 +121,6 @@ def get_all_user_profiles():
     except Exception as e:
         st.write(f"Error retrieving profiles: {e}")
         return []
-
     finally:
         if cursor:
             cursor.close()
@@ -236,7 +234,7 @@ class UserProfile:
                  snore, values_in_roommate, primary_focus, communication_style,
                  privacy_level, pets, temperature_preference):
         self.name = name
-        self.email = email
+        self.email_or_instagram = email_or_instagram
         self.cleanliness = cleanliness
         self.age = age
         self.gender = gender
