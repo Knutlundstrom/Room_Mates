@@ -52,39 +52,39 @@ def save_user_profile(user1):
         conn = connect_db()
         cursor = conn.cursor()
         insert_query = """
-        INSERT INTO User_Profiles (
-            name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
-            personality_type, social_battery, confrontational_behavior, religion,
-            drug_use, activities, busy, significant_other, major, year, snore,
-            values_in_roommate, primary_focus, communication_style, privacy_level,
-            pets, temperature_preference
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
-        data = (
-            user1.name,
-            user1.email_or_instagram,
-            user1.cleanliness,
-            user1.age,
-            user1.gender,
-            user1.sleep_schedule,
-            user1.personality_type,
-            user1.social_battery,
-            user1.confrontational_behavior,
-            user1.religion,
-            user1.drug_use,
-            user1.activities,
-            user1.busy,
-            user1.significant_other,
-            user1.major,
-            user1.year,
-            user1.snore,
-            user1.values_in_roommate,
-            user1.primary_focus,
-            user1.communication_style,
-            user1.privacy_level,
-            user1.pets,
-            user1.temperature_preference
-        )
+    INSERT INTO User_Profiles (
+        name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
+        personality_type, social_battery, confrontational_behavior, religion,
+        drug_use, activities, busy, significant_other, major, year, snore,
+        values_in_roommate, primary_focus, communication_style, privacy_level,
+        pets, temperature_preference
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+"""
+data = (
+    user1.name,
+    user1.email_or_instagram,
+    user1.cleanliness,
+    user1.age,
+    user1.gender,
+    user1.sleep_schedule,
+    user1.personality_type,
+    user1.social_battery,
+    user1.confrontational_behavior,
+    user1.religion,
+    user1.drug_use,
+    user1.activities,
+    user1.busy,
+    user1.significant_other,
+    user1.major,
+    user1.year,
+    user1.snore,
+    user1.values_in_roommate,
+    user1.primary_focus,
+    user1.communication_style,
+    user1.privacy_level,
+    user1.pets,
+    user1.temperature_preference
+)
         cursor.execute(insert_query, data)
         conn.commit()
         st.write("Your profile has been saved to the database.")
