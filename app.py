@@ -257,7 +257,6 @@ class UserProfile:
         self.privacy_level = privacy_level
         self.pets = pets
         self.temperature_preference = temperature_preference
-
 def get_user_profile():
     st.title("Room_Mates/The Future of Roommate Matching")
     
@@ -271,6 +270,7 @@ def get_user_profile():
     if not name:
         st.error("Name cannot be left blank.")
         return None
+    
     email_or_instagram = st.text_input("Please type email to be reached out to when matched:")
     if not email_or_instagram:
         st.error("Email cannot be left blank.")
@@ -415,15 +415,16 @@ def get_user_profile():
                                            }[x])
     
     # Place the Submit Profile button at the end
-if st.button("Submit Profile"):
-    # Create and return the UserProfile object
-    return UserProfile(
-        name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
-        personality_type, social_battery, confrontational_behavior, religion,
-        drug_use, activities, busy, significant_other, major, year,
-        snore, values_in_roommate, primary_focus, communication_style,
-        privacy_level, pets, temperature_preference
-    )
+    if st.button("Submit Profile"):
+        # Create and return the UserProfile object
+        return UserProfile(
+            name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
+            personality_type, social_battery, confrontational_behavior, religion,
+            drug_use, activities, busy, significant_other, major, year,
+            snore, values_in_roommate, primary_focus, communication_style,
+            privacy_level, pets, temperature_preference
+        )
+    
     return None
 def main():
     # Step 1: Collect user profile
