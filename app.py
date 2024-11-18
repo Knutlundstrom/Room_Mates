@@ -229,7 +229,7 @@ import re
 import streamlit as st
 
 class UserProfile:
-    def __init__(self, name, email, cleanliness, age, gender, sleep_schedule,
+    def __init__(self, name, email_or_instagram, cleanliness, age, gender, sleep_schedule,
                  personality_type, social_battery, confrontational_behavior, religion,
                  drug_use, activities, busy, significant_other, major, year,
                  snore, values_in_roommate, primary_focus, communication_style,
